@@ -16,10 +16,15 @@ module.exports.initIO = (httpServer) => {
     console.log(socket.user, "Connected");
     socket.join(socket.user);
 
+    socket.emit("personal#2eed3b7d-9f61-479f-8761-084256a93b42", {
+      message: "this is to my personal channel",
+    });
+
     socket.on("call", (data) => {
       let calleeId = data.calleeId;
       let rtcMessage = data.rtcMessage;
       console.log("newCall", socket.user, rtcMessage);
+      console.log("calleeid", calleeId);
       socket.to(calleeId).emit("newCall", {
         callerId: socket.user,
         rtcMessage: rtcMessage,

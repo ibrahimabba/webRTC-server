@@ -1,12 +1,19 @@
-const path = require('path');
-const { createServer } = require('http');
+const path = require("path");
+const { createServer } = require("http");
 
-const express = require('express');
-const { getIO, initIO } = require('./socket');
+const express = require("express");
+const { getIO, initIO } = require("./socket");
 
 const app = express();
 
-app.use('/', express.static(path.join(__dirname, 'static')));
+app.use("/", express.static(path.join(__dirname, "static")));
+
+app.get("/testsocket", () => {
+  const io = getIO();
+  io.emit("personal#2eed3b7d-9f61-479f-8761-084256a93b42", {
+    message: "this sent from web",
+  });
+});
 
 const httpServer = createServer(app);
 
@@ -14,7 +21,5 @@ let port = process.env.PORT || 3500;
 
 initIO(httpServer);
 
-httpServer.listen(port)
+httpServer.listen(port);
 console.log("Server started on ", port);
-
-getIO();
